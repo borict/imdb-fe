@@ -15,12 +15,7 @@ export const RegisterPage = () => {
       password: values.password,
       confirmed_password: values.confirmPassword,
     };
-    try {
-      dispatch(register(mappedValues));
-    } catch (error) {
-      dispatch(auth.setError("Register failed"));
-    }
-
+    dispatch(register(mappedValues));
     setSubmitting(false);
   };
 

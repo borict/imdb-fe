@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import LoginPage from "./app/pages/LoginPage";
 import MoviesPage from "./app/pages/MoviesPage";
 import RegisterPage from "./app/pages/RegisterPage";
 
@@ -8,6 +9,10 @@ export default function Routes() {
     <Switch>
       <Route exact path="/register">
         <RegisterPage />
+      </Route>
+
+      <Route path="/login">
+        <LoginPage />
       </Route>
 
       <Route exact path="/movies">
