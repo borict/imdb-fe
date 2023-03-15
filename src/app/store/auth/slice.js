@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const middlewareActions = {
   login: () => {},
   register: () => {},
+  login: () => {},
   getActiveUser: () => {},
 };
 
