@@ -1,94 +1,109 @@
-import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { Field, Form, Formik } from "formik";
+import { Component } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RegisterSchema } from "../schemas/RegisterSchema";
-import { register } from "../store/auth";
+import { register, selectAuthError } from "../store/auth";
+import auth from "../store/auth/slice";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
-
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      const mappedValues = {
-        name: values.name,
-        email: values.email,
-        password: values.password,
-        confirmed_password: values.confirmPassword,
-      };
+  const emailError = useSelector(selectAuthError);
+  const submit = (values, setSubmitting) => {
+    const mappedValues = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      confirmed_password: values.confirmPassword,
+    };
+    try {
       dispatch(register(mappedValues));
-      window.location.replace("/movies");
-    },
-  });
+    } catch (error) {
+      dispatch(auth.setError("Register failed"));
+    }
+
+    setSubmitting(false);
+  };
 
   return (
     <div>
-      <form className="register-form" onSubmit={formik.handleSubmit}>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          placeholder="Your Name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <br />
-        <br />
-        {formik.touched.name && formik.errors.name ? (
-          <div>{formik.errors.name}</div>
-        ) : null}
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="Your Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <br />
-        <br />
-        {formik.touched.email && formik.errors.email ? (
-          <div>{formik.errors.email}</div>
-        ) : null}
-        <input
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Your password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <br />
-        <br />
-        {formik.touched.password && formik.errors.password ? (
-          <div>{formik.errors.password}</div>
-        ) : null}
-        <input
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          placeholder="Confirm password"
-          value={formik.values.confirmPassword}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <br />
-        <br />
-        {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-          <div>{formik.errors.confirmPassword}</div>
-        ) : null}
-        <button type="submit" value="submit">
-          Register
-        </button>
-      </form>
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        }}
+        validationSchema={RegisterSchema}
+        onSubmit={(values, { setSubmitting }) => submit(values, setSubmitting)}
+      >
+        {({ errors, touched, isSubmitting }) => (
+          <div>
+            <article>
+              <Form autoComplete="off">
+                <div className="form-group">
+                  <Field
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    class-name="form-control"
+                  />
+                  {touched.name && errors.name && (
+                    <small className="text-danger">{errors.name}</small>
+                  )}
+                </div>
+                <br />
+
+                <div className="form-group">
+                  <Field
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    class-name="form-control"
+                  />
+                  {touched.email && errors.email && (
+                    <small className="text-danger">{errors.email}</small>
+                  )}
+                </div>
+                <br />
+
+                <div className="form-group">
+                  <Field
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    class-name="form-control"
+                  />
+                  {touched.password && errors.password && (
+                    <small className="text-danger">{errors.password}</small>
+                  )}
+                </div>
+                <br />
+
+                <div className="form-group">
+                  <Field
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Enter your password"
+                    class-name="form-control"
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <small className="text-danger">
+                      {errors.confirmPassword}
+                    </small>
+                  )}
+                </div>
+                <br />
+                {emailError && (
+                  <p className="text-danger">Email is already taken</p>
+                )}
+                <button disabled={isSubmitting} type="submit">
+                  Register
+                </button>
+              </Form>
+            </article>
+          </div>
+        )}
+      </Formik>
     </div>
   );
 };

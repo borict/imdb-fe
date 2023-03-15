@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const middlewareActions = {
+  login: () => {},
   register: () => {},
   getActiveUser: () => {},
 };
@@ -10,6 +11,7 @@ const auth = createSlice({
   initialState: {
     token: localStorage.getItem("token"),
     activeUser: null,
+    error: null,
   },
   reducers: {
     setActiveUser: (state, action) => {
@@ -18,11 +20,15 @@ const auth = createSlice({
     setToken: (state, action) => {
       state.token = action.payload;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
 
     ...middlewareActions,
   },
 });
 
-export const { register, setActiveUser, setToken } = auth.actions;
+export const { login, register, setActiveUser, setToken, setError } =
+  auth.actions;
 
 export default auth.reducer;
