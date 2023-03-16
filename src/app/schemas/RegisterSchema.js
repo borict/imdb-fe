@@ -1,6 +1,5 @@
 import * as yup from "yup";
-
-const passwordRules = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+import { passwordRegex } from "./constants/constants";
 
 export const RegisterSchema = yup.object({
   name: yup.string().required("Username is required"),
@@ -10,7 +9,7 @@ export const RegisterSchema = yup.object({
     .email("Invalid email adress"),
   password: yup
     .string()
-    .matches(passwordRules, { message: "Please create a stronger password" })
+    .matches(passwordRegex, { message: "Please create a stronger password" })
     .required("Password is required"),
   confirmPassword: yup
     .string()

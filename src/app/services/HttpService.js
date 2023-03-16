@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default class HttpService {
+class HttpService {
   constructor() {
     this.client = axios.create({
       baseURL: "http://127.0.0.1:8000/api",
@@ -15,3 +15,5 @@ export default class HttpService {
     });
   }
 }
+const httpService = new HttpService();
+export default httpService;
