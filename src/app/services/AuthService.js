@@ -1,6 +1,6 @@
-import HttpService from "./HttpService";
+import ApiService from "./ApiService";
 
-class AuthService extends HttpService {
+class AuthService extends ApiService {
   login = async (credentials) => {
     const response = await this.client.post("/login", credentials);
     localStorage.setItem("token", response.data.authorisation.token);

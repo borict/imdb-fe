@@ -1,6 +1,5 @@
 import * as yup from "yup";
-
-const passwordRules = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+import { passwordRegex } from "./constants/constants";
 
 export const LoginSchema = yup.object({
   checkEmail: yup.boolean(),
@@ -10,6 +9,6 @@ export const LoginSchema = yup.object({
     .email("Email should be valid and contain @"),
   password: yup
     .string()
-    .matches(passwordRules, { message: "Invalid password" })
+    .matches(passwordRegex, { message: "Invalid password" })
     .required("Password is required"),
 });

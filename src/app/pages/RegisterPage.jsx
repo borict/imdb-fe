@@ -1,9 +1,7 @@
 import { Field, Form, Formik } from "formik";
-import { Component } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RegisterSchema } from "../schemas/RegisterSchema";
 import { register, selectAuthError } from "../store/auth";
-import auth from "../store/auth/slice";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
